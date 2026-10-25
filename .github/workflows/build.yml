@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: xcrun swiftc --version
+
+      - name: Build and package app
+        run: ./package-release.sh
+
+      - name: Verify bundle
+        run: |
+          codesign --verify --strict --verbose=2 "build/Mic Cycle.app"
+          plutil -lint "build/Mic Cycle.app/Contents/Info.plist"
+
+      - name: Run logic tests
+        run: ./test-core-audio.sh --logic-only
+
+      - name: Build CLI extra
+        run: |
+          mkdir -p build/module-cache
+          xcrun swiftc -module-cache-path build/module-cache -O -framework CoreAudio \
+            Extras/NextMicrophone.swift -o build/next-microphone
