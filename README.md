@@ -33,15 +33,35 @@ brew install --cask mic-cycle
 2. Open it and drag **Mic Cycle** onto **Applications**.
 3. Open it. A microphone icon appears in the menu bar. There is no Dock icon.
 
-The app is ad-hoc signed, not notarized, so Gatekeeper blocks the first launch.
-On macOS 15 and later, try to open it once, then go to
-**System Settings > Privacy & Security** and click **Open Anyway**.
-On macOS 13 and 14, Control-click the app and choose **Open**.
-If you prefer not to do this, build from source (below).
-
 The release runs on Apple silicon and Intel Macs.
 
-When upgrading, quit the running copy before replacing it.
+### First launch warning
+
+macOS says it "could not verify Mic Cycle is free of malware". This is not a
+malware finding. Mic Cycle is ad-hoc signed and not notarized, so Gatekeeper
+blocks the first launch.
+
+- macOS 15 and later: try to open it once, click **Done**, then go to
+  **System Settings > Privacy & Security** and click **Open Anyway**.
+- macOS 13 and 14: Control-click the app and choose **Open**.
+- Or remove the download quarantine flag from Terminal:
+  `xattr -dr com.apple.quarantine "/Applications/Mic Cycle.app"`
+
+Expect this again after each update. If you prefer not to do this, build from source (below).
+
+### Update
+
+`brew upgrade --cask mic-cycle`. If you installed by hand, quit the running copy
+before replacing it.
+
+### Uninstall
+
+1. Untick **Open at Login** in the menu, if it is on.
+2. `brew uninstall --cask mic-cycle`, or quit the app and move it to the Trash.
+3. Optional: `brew untap ecossaiah/mic-cycle`.
+
+Mic Cycle leaves no other files. If you skipped step 1, remove the leftover entry under
+**System Settings > General > Login Items**.
 
 ## Usage
 
