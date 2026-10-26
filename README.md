@@ -23,6 +23,7 @@ after macOS reads back the new device.
 
 ```sh
 brew tap EcossAIah/mic-cycle https://github.com/EcossAIah/mic-cycle
+brew trust ecossaiah/mic-cycle
 brew install --cask mic-cycle
 ```
 
