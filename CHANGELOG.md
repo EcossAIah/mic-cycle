@@ -4,6 +4,20 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project uses [Semantic Versioning](https://semver.org/).
 
+## [1.4.0] - 2026-10-26
+
+### Added
+
+- Open at Login menu toggle. Uses macOS Login Items, so it also shows under
+  **System Settings > General > Login Items**.
+- DMG installer alongside the zip.
+- Homebrew cask (`brew tap EcossAIah/mic-cycle https://github.com/EcossAIah/mic-cycle`).
+- Optional Developer ID signing and notarization in the release scripts.
+
+### Changed
+
+- Release build is universal (Apple silicon and Intel).
+
 ## [1.3.0] - 2026-10-25
 
 First public release. Versions 1.0.0 to 1.2.0 were private builds.

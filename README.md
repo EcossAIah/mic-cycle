@@ -19,8 +19,17 @@ after macOS reads back the new device.
 
 ## Install
 
-1. Download `mic-cycle-1.3.0.zip` from [Releases](https://github.com/EcossAIah/mic-cycle/releases).
-2. Unzip it and drag **Mic Cycle.app** to `/Applications`.
+**Homebrew:**
+
+```sh
+brew tap EcossAIah/mic-cycle https://github.com/EcossAIah/mic-cycle
+brew install --cask mic-cycle
+```
+
+**Or by hand:**
+
+1. Download `mic-cycle-<version>.dmg` from [Releases](https://github.com/EcossAIah/mic-cycle/releases).
+2. Open it and drag **Mic Cycle** onto **Applications**.
 3. Open it. A microphone icon appears in the menu bar. There is no Dock icon.
 
 The app is ad-hoc signed, not notarized, so Gatekeeper blocks the first launch.
@@ -29,7 +38,7 @@ On macOS 15 and later, try to open it once, then go to
 On macOS 13 and 14, Control-click the app and choose **Open**.
 If you prefer not to do this, build from source (below).
 
-The release build is for Apple silicon. On an Intel Mac, build from source.
+The release runs on Apple silicon and Intel Macs.
 
 When upgrading, quit the running copy before replacing it.
 
@@ -41,6 +50,8 @@ When upgrading, quit the running copy before replacing it.
   to switch to the next input. The order is alphabetical and wraps around.
 - A small panel near the top of the screen confirms each switch, or explains why it failed.
 - The list updates on its own when devices connect, disconnect, or are changed by another app.
+- **Open at Login** starts Mic Cycle when you log in. Move the app to
+  /Applications first; macOS may ignore it from Downloads.
 - **Copy Diagnostics** copies the device list, each device's eligibility, and the
   last error to the clipboard. Paste it into an issue if switching fails.
 - **Quit Mic Cycle** (Command+Q while the menu is open) exits the app.
@@ -116,9 +127,7 @@ xcrun swiftc -module-cache-path build/module-cache -O -framework CoreAudio \
 - The shortcut is fixed to Control+Option+M. If another app holds it, the menu
   shows an error and the device list still works. Free the shortcut and restart Mic Cycle.
 - Apps that pick a specific microphone in their own settings ignore the system default.
-- There is no launch-at-login option. Add the app under
-  **System Settings > General > Login Items** if you want it.
-- Not notarized. The release zip is Apple silicon only.
+- Not notarized.
 - Live switching and hotkey delivery are not covered by CI; they need real audio hardware.
 
 ## License

@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import ServiceManagement
 
 @MainActor
 final class AppController: ObservableObject {
@@ -7,6 +8,8 @@ final class AppController: ObservableObject {
     private let overlay = ConfirmationOverlay()
     private var hotKey: GlobalHotKey?
     @Published private(set) var shortcutError: String?
+    @Published private(set) var opensAtLogin = SMAppService.mainApp.status == .enabled
+    @Published private(set) var loginItemError: String?
 
     init() {
         audio.confirmation = { [weak self] text, success in self?.overlay.show(text, success: success) }
@@ -15,6 +18,15 @@ final class AppController: ObservableObject {
                 MainActor.assumeIsolated { self?.audio.cycle() }
             }
         } catch { shortcutError = error.localizedDescription }
+    }
+
+    func setOpensAtLogin(_ enabled: Bool) {
+        do {
+            if enabled { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
+            loginItemError = nil
+        } catch { loginItemError = "Open at Login failed: \(error.localizedDescription)" }
+        // Re-read so the checkbox reflects what macOS actually did.
+        opensAtLogin = SMAppService.mainApp.status == .enabled
     }
 }
 
@@ -53,6 +65,11 @@ struct DeviceMenu: View {
         if let error = audio.error { Text(error) }
         if let error = controller.shortcutError { Text(error) }
         Divider()
+        Toggle("Open at Login", isOn: Binding(
+            get: { controller.opensAtLogin },
+            set: { controller.setOpensAtLogin($0) }
+        ))
+        if let error = controller.loginItemError { Text(error) }
         Button("Copy Diagnostics") {
             let text = audio.diagnostics()
             NSPasteboard.general.clearContents()

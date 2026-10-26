@@ -21,6 +21,8 @@ jobs:
         run: |
           codesign --verify --strict --verbose=2 "build/Mic Cycle.app"
           plutil -lint "build/Mic Cycle.app/Contents/Info.plist"
+          lipo "build/Mic Cycle.app/Contents/MacOS/MicCycle" -verify_arch arm64 x86_64
+          hdiutil verify build/mic-cycle-*.dmg
 
       - name: Run logic tests
         run: ./test-core-audio.sh --logic-only
